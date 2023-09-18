@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "wu3i3Ax4ngY4jnrIBqW13zK+hu3Hp9ZfF3Iqwdks9rE=",
+  "Source": "ReceiptSharing.Api",
+  "BasePath": "_content/ReceiptSharing.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
