@@ -54,4 +54,4 @@ jobs:
           app-name: 'ReceiptSharingApp'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0F1449825B1D46258FA8A13B45CA2F6E }}
-          package: .
+          package: .net-app
