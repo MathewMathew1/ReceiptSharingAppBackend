@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Globalization;
 using ReceiptSharing.Api.MiddleWare;
 using System.Text.Json.Serialization;
-using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +17,7 @@ IConfiguration configuration = new ConfigurationBuilder()
 
 // Add services to the container
 
-
+builder.Services.AddHealthChecks();
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme; // Set your desired default scheme
@@ -101,14 +100,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();Console.WriteLine("help me");
+app.UseHttpsRedirection();
 app.UseAuthentication();
-app.UseAuthorization();
+
 app.UseCors("corsapp");
 app.UseMiddleware<JwtMiddleware>();
 app.UseMiddleware<RequestLoggingMiddleware>();
-
-app.MapControllers();
+app.UseRouting();
+app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    // Health check endpoint
+    endpoints.MapHealthChecks("/health");
+    endpoints.MapControllers();
+});
 
 app.Run();
 

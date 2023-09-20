@@ -63,7 +63,7 @@ namespace ReceiptSharing.Test{
                     UserId = _user.Id,
                     Title = receiptCommand.Title,
                     Description = receiptCommand.Description,
-                    Steps = receiptCommand.Steps,
+                    Steps = receiptCommand.Steps.ToArray(),
                     ImageLinks = (await Task.WhenAll(receiptCommand.Images.Select(async image => await _imageStorage.PostImage(image)))).ToArray(),
                     VideoLink = receiptCommand.VideoLink,
                     MinCookDuration = receiptCommand.MinCookDuration,
@@ -123,7 +123,7 @@ namespace ReceiptSharing.Test{
             int receiptId = 1;
             // Arrange
 
-            _receiptRepository.DeleteReceiptAsync(Arg.Any<int>(), Arg.Any<int>()).ReturnsForAnyArgs(true);
+            _receiptRepository.DeleteReceiptAsync(Arg.Any<int>()).ReturnsForAnyArgs(true);
             // Act
             var actionResult = await _controller.DeleteReceipt(receiptId);
  
@@ -138,7 +138,7 @@ namespace ReceiptSharing.Test{
             int receiptId = 1;
             // Arrange
 
-            _receiptRepository.DeleteReceiptAsync(Arg.Any<int>(), Arg.Any<int>()).ReturnsForAnyArgs(false);
+            _receiptRepository.DeleteReceiptAsync(Arg.Any<int>()).ReturnsForAnyArgs(false);
             // Act
             var actionResult = await _controller.DeleteReceipt(receiptId);
  
@@ -233,7 +233,7 @@ namespace ReceiptSharing.Test{
             IEnumerable<SubscriptionUser> subscribedToIds = new List<SubscriptionUser> { CreateRandomSubscription.CreateSubscription(), CreateRandomSubscription.CreateSubscription(), 
                 CreateRandomSubscription.CreateSubscription(), CreateRandomSubscription.CreateSubscription() };
             _subscriptionUserRepository.GetUserSubscriptionsAsync(Arg.Any<int>()).Returns(subscribedToIds);
-            _receiptRepository.GetNewestSubscribedReceiptsAsync(Arg.Any<List<int>>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>()).Returns((receipts, count: receipts.Count));
+            _receiptRepository.GetNewestSubscribedReceiptsAsync(Arg.Any<List<int>>(), Arg.Any<int>(), Arg.Any<int>()).Returns((receipts, count: receipts.Count));
             // Act
             var actionResult = await _controller.GetNewestUserSubscribedReceipts();
             ObjectResult result = actionResult.Result as ObjectResult;
@@ -258,7 +258,7 @@ namespace ReceiptSharing.Test{
             List<Receipt> receipts =  new () { CreateRandomReceipt.CreateReceipt(), CreateRandomReceipt.CreateReceipt(), CreateRandomReceipt.CreateReceipt(),
             CreateRandomReceipt.CreateReceipt(), CreateRandomReceipt.CreateReceipt()};
  
-            _receiptRepository.GetSubscribedReceiptsWithBayesianRatingAsync(Arg.Any<int>(), Arg.Any<int>()).Returns((receipts, false));
+            _receiptRepository.GetReceiptsWithBayesianRatingAsync(Arg.Any<int>(), Arg.Any<int>()).Returns((receipts, false));
             // Act
             var actionResult = await _controller.GetSortedReceipts("bestRated");
             ObjectResult result = actionResult.Result as ObjectResult;

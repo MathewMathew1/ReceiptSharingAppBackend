@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HP\\Desktop\\ReceiptSharing\\build.proj": {}
+    "C:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\build.proj": {}
   },
   "projects": {
-    "C:\\Users\\HP\\Desktop\\ReceiptSharing\\build.proj": {
+    "C:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\build.proj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\ReceiptSharing\\build.proj",
+        "projectUniqueName": "C:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\build.proj",
         "projectName": "build",
-        "projectPath": "C:\\Users\\HP\\Desktop\\ReceiptSharing\\build.proj",
+        "projectPath": "C:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\build.proj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\ReceiptSharing\\obj\\",
+        "outputPath": "C:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config"

@@ -49,7 +49,8 @@ namespace ReceiptSharing.Test{
         {
             // Arrange
             var userId = 123;
-            _subscriptionRepository.SubscribeToUserAsync(Arg.Any<SubscriptionUser>()).Returns(true);
+            var subscription = CreateRandomSubscription.CreateSubscription();
+            _subscriptionRepository.SubscribeToUserAsync(Arg.Any<SubscriptionUser>()).Returns(subscription);
             // Act
             var result = await _controller.SubscribeToUserAsync(userId);
 
@@ -62,7 +63,7 @@ namespace ReceiptSharing.Test{
         {
             // Arrange
             var userId = 123;
-            _subscriptionRepository.SubscribeToUserAsync(Arg.Any<SubscriptionUser>()).Returns(false);
+            _subscriptionRepository.SubscribeToUserAsync(Arg.Any<SubscriptionUser>()).Returns((SubscriptionUser)null);
             // Act
             var result = await _controller.SubscribeToUserAsync(userId);
 

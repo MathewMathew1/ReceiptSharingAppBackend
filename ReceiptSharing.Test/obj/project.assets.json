@@ -8973,8 +8973,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "c:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\ReceiptSharing.Api\\ReceiptSharing.Api.csproj": {
-              "projectPath": "c:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\ReceiptSharing.Api\\ReceiptSharing.Api.csproj"
+            "C:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\ReceiptSharing.Api\\ReceiptSharing.Api.csproj": {
+              "projectPath": "C:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\ReceiptSharing.Api\\ReceiptSharing.Api.csproj"
             }
           }
         }
