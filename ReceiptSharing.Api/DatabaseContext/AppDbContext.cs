@@ -10,12 +10,14 @@ namespace ReceiptSharing.Api.Models
         public DbSet<SubscriptionReceipt> SubscriptionsReceipt { get; set; }
         public DbSet<SubscriptionUser> SubscriptionsUser { get; set; }
         public DbSet<Rating> Ratings { get; set; }
+        ILogger<AppDbContext> _logger;
 
         private IConfiguration _configuration;
 
-        public AppDbContext(DbContextOptions<AppDbContext> options, IConfiguration configuration)
+        public AppDbContext(DbContextOptions<AppDbContext> options, IConfiguration configuration, ILogger<AppDbContext> logger)
             : base(options)
         {
+            _logger = logger;
             _configuration = configuration;
         }
 
@@ -23,6 +25,7 @@ namespace ReceiptSharing.Api.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection")!;
+            _logger.LogInformation(connectionString);
             optionsBuilder.UseNpgsql(connectionString);
         }
 
