@@ -16,8 +16,12 @@ IConfiguration configuration = new ConfigurationBuilder()
     .Build();
 
 // Add services to the container
-Console.WriteLine("");
 
+builder.Services.AddLogging(builder =>
+{
+    builder.AddConsole(); // Use the Console logging provider
+});
+Console.WriteLine("Started");
 builder.Services.AddHealthChecks();
 builder.Services.AddAuthentication(options =>
     {
@@ -68,10 +72,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddLogging(builder =>
-    {
-        builder.AddConsole(); // Use the Console logging provider
-    });
+
 builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
