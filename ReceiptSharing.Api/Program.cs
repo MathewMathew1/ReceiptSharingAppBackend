@@ -34,8 +34,8 @@ builder.Services.AddAuthentication(options =>
         })
     .AddGoogle(GoogleDefaults.AuthenticationScheme,googleOptions =>
     {
-        googleOptions.ClientId = configuration["Authentication__Google__ClientId"]!;
-        googleOptions.ClientSecret = configuration["Authentication__Google__ClientSecret"]!;
+        googleOptions.ClientId = configuration["GoogleClientId"]!;
+        googleOptions.ClientSecret = configuration["GoogleClientSecret"]!;
         googleOptions.ClaimActions.MapJsonKey("image", "picture");
     });
 
