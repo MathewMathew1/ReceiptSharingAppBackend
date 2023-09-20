@@ -1,4 +1,4 @@
-#nullable enable
+
 namespace ReceiptSharing.Api.Models{
 
 
@@ -13,7 +13,4 @@ namespace ReceiptSharing.Api.Models{
 
        public string link {get; set;} = "";
     }
-        
-        
-
 }

@@ -16,6 +16,7 @@ IConfiguration configuration = new ConfigurationBuilder()
     .Build();
 
 // Add services to the container
+Console.WriteLine("");
 
 builder.Services.AddHealthChecks();
 builder.Services.AddAuthentication(options =>
@@ -29,8 +30,8 @@ builder.Services.AddAuthentication(options =>
         })
     .AddGoogle(GoogleDefaults.AuthenticationScheme,googleOptions =>
     {
-        googleOptions.ClientId = configuration["Authentication:Google:ClientId"]!;
-        googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"]!;
+        googleOptions.ClientId = configuration["Authentication__Google__ClientId"]!;
+        googleOptions.ClientSecret = configuration["Authentication__Google__ClientSecret"]!;
         googleOptions.ClaimActions.MapJsonKey("image", "picture");
     });
 
