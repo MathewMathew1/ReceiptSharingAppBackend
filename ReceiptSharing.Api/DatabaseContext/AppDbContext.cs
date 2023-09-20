@@ -24,7 +24,7 @@ namespace ReceiptSharing.Api.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
+            var connectionString = Environment.GetEnvironmentVariable("POSTGRESQLCONNSTR_DefaultConnection");
             _logger.LogInformation(connectionString);
             optionsBuilder.UseNpgsql(connectionString);
         }
