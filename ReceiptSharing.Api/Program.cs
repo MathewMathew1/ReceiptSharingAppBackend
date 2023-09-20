@@ -12,7 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 IConfiguration configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
     .AddUserSecrets<Program>()
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
+    .AddEnvironmentVariables()
     .Build();
 
 // Add services to the container
