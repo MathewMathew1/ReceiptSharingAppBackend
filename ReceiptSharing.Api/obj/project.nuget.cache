@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "rJMpvAQVKQm8Ey+edIUaY+3FX1EMcb83PWAdAkmbqCscgrzmBhlZNU/DhNIY+t5FFP5x9kqU8FypOMZ0QYPn+A==",
+  "dgSpecHash": "MxKWmw1T2J98HUE6lOJB+RJPjT6Kgy4JZLieA6Oc6fsLLgn55VKyWzm+Nns3UaFI9xG9sqryL1MCMTPTAdtUTg==",
   "success": true,
-  "projectFilePath": "c:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\ReceiptSharing.Api\\ReceiptSharing.Api.csproj",
+  "projectFilePath": "C:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\ReceiptSharing.Api\\ReceiptSharing.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HP\\.nuget\\packages\\aspnet.security.oauth.discord\\7.0.3\\aspnet.security.oauth.discord.7.0.3.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
