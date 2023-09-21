@@ -22,6 +22,9 @@ jobs:
           dotnet-version: '7.x'
           include-prerelease: true
 
+      - name: Install EF tool
+        run: dotnet tool install --global dotnet-ef
+
       
   build:
     runs-on: ubuntu-latest
@@ -39,7 +42,7 @@ jobs:
         run: dotnet tool install --global dotnet-ef
 
       - name: Generate SQL Script
-        run: dotnet ef migrations script --idempotent --project ReceiptSharing.Api/ReceiptSharing.Api.csproj --output $(System.ArtifactsDirectory)/script.sql
+        run: dotnet ef migrations script --idempotent --project ReceiptSharing.Api/ReceiptSharing.Api.csproj --output $(github.workspace)/artifacts/script.sql
 
       - name: Update Database
         uses: azure/sql-action@v1
