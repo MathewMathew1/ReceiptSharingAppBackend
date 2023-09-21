@@ -57,7 +57,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifactName }}
-          path: $(System.ArtifactsDirectory)/script.sql
+          path: $GITHUB_WORKSPACE/artifacts/script.sql
 
       - name: Build with dotnet
         run: dotnet build ReceiptSharing.Api/ReceiptSharing.Api.csproj --configuration Release
