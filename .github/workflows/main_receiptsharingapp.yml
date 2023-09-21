@@ -37,7 +37,9 @@ jobs:
           include-prerelease: true
       
       - name: Generate SQL Script
-        run: dotnet ef migrations script --idempotent --project $(Build.SourcesDirectory)ReceiptSharing.Api.csproj --output $(System.ArtifactsDirectory)/script.sql
+        run: dotnet ef migrations script --idempotent --project ReceiptSharing.Api/ReceiptSharing.Api.csproj --output ${{ env.BUILD_SOURCESDIRECTORY }}/script.sql
+        env:
+          BUILD_SOURCESDIRECTORY: ${{ github.workspace }}
 
       - name: Update Database
         uses: azure/sql-action@v1
