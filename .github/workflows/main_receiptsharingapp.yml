@@ -36,8 +36,13 @@ jobs:
           dotnet-version: '7.x'
           include-prerelease: true
       
+      - name: Debug Paths
+        run: |
+          echo "Project File Path: $(BUILD_SOURCESDIRECTORY)/ReceiptSharingAppBackend/ReceiptSharingAppBackend.csproj"
+          echo "Output Path: $(System.ArtifactsDirectory)/script.sql
+
       - name: Generate SQL Script
-        run: dotnet ef migrations script --idempotent --project ReceiptSharing.Api/ReceiptSharing.Api.csproj --output ${{ env.BUILD_SOURCESDIRECTORY }}/script.sql
+        run: dotnet ef migrations script --idempotent --project $(Build.SourcesDirectory)\ReceiptSharing.Api.csproj --output ${{ env.BUILD_SOURCESDIRECTORY }}/script.sql
         env:
           BUILD_SOURCESDIRECTORY: ${{ github.workspace }}
 
