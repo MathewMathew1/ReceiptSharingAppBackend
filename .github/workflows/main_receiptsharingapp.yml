@@ -10,6 +10,20 @@ on:
   workflow_dispatch:
 
 jobs:
+  install-ef-tool: # Add a new job for installing EF tool
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.x'
+          include-prerelease: true
+
+      - name: Install EF tool
+        run: dotnet tool install --global dotnet-ef
   build:
     runs-on: ubuntu-latest
 
@@ -21,6 +35,29 @@ jobs:
         with:
           dotnet-version: '7.x'
           include-prerelease: true
+      
+      - name: Apply Entity Framework Migrations
+        run: dotnet ef database update --project ReceiptSharing.Api/ReceiptSharing.Api.csproj --startup-project ReceiptSharing.Api/ReceiptSharing.Api.csproj --context AppDbContext --verbose
+        env:
+          DOTNET_ROOT: ${{env.DOTNET_ROOT}}
+      
+      - name: Generate SQL Script
+        run: dotnet ef migrations script --idempotent --project $(Build.SourcesDirectory)ReceiptSharing.Api.csproj --output $(System.ArtifactsDirectory)/script.sql
+
+      - name: Update Database
+        uses: azure/sql-action@v1
+        with:
+          azureSubscription: '<Service Connection Identifier>'
+          AuthenticationType: 'connectionString'
+          ConnectionString: '${{ secrets.DB_CONNECTION_STRING }}'
+          deployType: 'SqlTask'
+          SqlFile: '$(System.ArtifactsDirectory)/script.sql'
+
+      - name: Publish Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.artifactName }}
+          path: $(System.ArtifactsDirectory)/script.sql
 
       - name: Build with dotnet
         run: dotnet build ReceiptSharing.Api/ReceiptSharing.Api.csproj --configuration Release
