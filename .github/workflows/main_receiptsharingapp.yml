@@ -65,7 +65,7 @@ jobs:
       - name: dotnet publish
         run: dotnet publish ReceiptSharing.Api/ReceiptSharing.Api.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
-      - name: Upload artifact for deployment job
+      - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
