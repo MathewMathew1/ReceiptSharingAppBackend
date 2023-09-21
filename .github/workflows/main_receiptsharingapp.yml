@@ -42,7 +42,9 @@ jobs:
         run: dotnet tool install --global dotnet-ef
 
       - name: Generate SQL Script
-        run: dotnet ef migrations script --idempotent --project ReceiptSharing.Api/ReceiptSharing.Api.csproj --output $(github.workspace)/artifacts/script.sql
+        run: |
+          cd ReceiptSharing.Api  # Change to the correct directory
+          dotnet ef migrations script --idempotent --project ReceiptSharing.Api.csproj --output $GITHUB_WORKSPACE/artifacts/script.sql
 
       - name: Update Database
         uses: azure/sql-action@v1
