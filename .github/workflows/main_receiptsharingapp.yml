@@ -44,20 +44,20 @@ jobs:
       - name: Generate SQL Script
         run: |
           cd ReceiptSharing.Api  # Change to the correct directory
-          dotnet ef migrations script --idempotent --project ReceiptSharing.Api.csproj --output ReceiptSharing.Api/artifacts/script.sql
+          dotnet ef migrations script --idempotent --project ReceiptSharing.Api.csproj --output artifacts/script.sql
 
       - name: Update Database
         uses: azure/sql-action@v1
         with:
           server-name: 'receiptsharingapp-server'
           connection-string: '${{ secrets.DB_CONNECTION_STRING }}'
-          sql-file: 'ReceiptSharing.Api/artifacts/script.sql'
+          sql-file: '/ReceiptSharing.Api/artifacts/script.sql'
 
       - name: Publish Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.artifactName }}
-          path: ReceiptSharing.Api/artifacts/script.sql
+          path: /ReceiptSharing.Api/artifacts/script.sql
 
       - name: Build with dotnet
         run: dotnet build ReceiptSharing.Api/ReceiptSharing.Api.csproj --configuration Release
