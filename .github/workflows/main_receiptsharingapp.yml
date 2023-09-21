@@ -46,11 +46,6 @@ jobs:
           cd ReceiptSharing.Api  # Change to the correct directory
           dotnet ef migrations script --idempotent --project ReceiptSharing.Api.csproj --output $GITHUB_WORKSPACE/artifacts/script.sql
 
-      - name: Debug Paths
-        run: |
-          echo "Project"
-          echo "secret: ${{ secrets.DB_CONNECTION_STRING }}"
-
       - name: Update Database
         uses: azure/sql-action@v1
         with:
