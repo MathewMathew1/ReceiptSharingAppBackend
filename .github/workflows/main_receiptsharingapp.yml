@@ -27,7 +27,7 @@ jobs:
 
       
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -45,6 +45,11 @@ jobs:
         run: |
           cd ReceiptSharing.Api  # Change to the correct directory
           dotnet ef migrations script --idempotent --project ReceiptSharing.Api.csproj --output artifacts/script.sql
+
+      - name: Set up PostgreSQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install postgresql-client
 
       - name: Execute SQL Script
         run: |
