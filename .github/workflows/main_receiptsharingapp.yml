@@ -53,7 +53,7 @@ jobs:
 
       - name: Execute SQL Script
         run: |
-          psql "${{ secrets.DB_CONNECTION_STRING }}" -f ./ReceiptSharing.Api/artifacts/script.sql
+          psql -h receiptsharingdb.postgres.database.azure.com -p 5432 -U Adminek -d your_database -f ./ReceiptSharing.Api/artifacts/script.sql
 
 
       - name: Publish Artifacts
