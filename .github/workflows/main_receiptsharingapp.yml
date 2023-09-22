@@ -49,7 +49,7 @@ jobs:
       - name: Update Database
         uses: azure/sql-action@v1
         with:
-          server-name: 'receiptsharingdb.postgres.database.azure.com'
+          server-name: receiptsharingdb.postgres.database.azure.com
           connection-string: '${{ secrets.DB_CONNECTION_STRING }}'
           sql-file: './ReceiptSharing.Api/artifacts/script.sql'
 
