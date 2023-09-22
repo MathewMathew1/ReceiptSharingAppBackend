@@ -155,7 +155,15 @@ namespace ReceiptSharing.Api.Controllers
 
                 Response.Cookies.Append("jwt", token, cookieOptions);
 
-                return Redirect("http://localhost:5173/");
+                string redirectUrl;
+
+                #if DEBUG
+                redirectUrl = "http://localhost:5173/";
+                #else
+                redirectUrl = "https://receptao.netlify.app/";
+                #endif
+
+                return Redirect(redirectUrl);
             }
             catch (Exception ex)
             {
