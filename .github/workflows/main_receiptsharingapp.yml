@@ -56,13 +56,6 @@ jobs:
           export PGPASSWORD="${{ secrets.PGPASSWORD }}"
           psql -h receiptsharingdb.postgres.database.azure.com -p 5432 -U Adminek -d your_database_name -f ./ReceiptSharing.Api/artifacts/script.sql
 
-
-      - name: Publish Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ env.artifactName }}
-          path: ./ReceiptSharing.Api/artifacts/script.sql
-
       - name: Build with dotnet
         run: dotnet build ReceiptSharing.Api/ReceiptSharing.Api.csproj --configuration Release
 
