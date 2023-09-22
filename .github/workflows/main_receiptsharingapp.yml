@@ -53,6 +53,7 @@ jobs:
 
       - name: Execute SQL Script
         run: |
+          export PGPASSWORD="${{ secrets.PGPASSWORD }}"
           psql -h receiptsharingdb.postgres.database.azure.com -p 5432 -U Adminek -d your_database -f ./ReceiptSharing.Api/artifacts/script.sql
 
 
