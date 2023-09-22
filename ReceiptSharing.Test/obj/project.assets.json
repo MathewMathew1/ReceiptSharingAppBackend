@@ -8954,11 +8954,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\ReceiptSharing.Test\\ReceiptSharing.Test.csproj",
+      "projectUniqueName": "c:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\ReceiptSharing.Test\\ReceiptSharing.Test.csproj",
       "projectName": "ReceiptSharing.Test",
-      "projectPath": "C:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\ReceiptSharing.Test\\ReceiptSharing.Test.csproj",
+      "projectPath": "c:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\ReceiptSharing.Test\\ReceiptSharing.Test.csproj",
       "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\ReceiptSharing.Test\\obj\\",
+      "outputPath": "c:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\ReceiptSharing.Test\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -8973,8 +8973,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\ReceiptSharing.Api\\ReceiptSharing.Api.csproj": {
-              "projectPath": "C:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\ReceiptSharing.Api\\ReceiptSharing.Api.csproj"
+            "c:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\ReceiptSharing.Api\\ReceiptSharing.Api.csproj": {
+              "projectPath": "c:\\Users\\HP\\Desktop\\ReceiptSharing\\Backend\\ReceiptSharing.Api\\ReceiptSharing.Api.csproj"
             }
           }
         }
