@@ -33,8 +33,10 @@ namespace ReceiptSharing.Api.Controllers
         {
             try
             {
-                var properties = new AuthenticationProperties { RedirectUri = "https://localhost:7234/api/Auth/google-response" };
-                
+                var properties = new AuthenticationProperties { 
+                    RedirectUri = Url.Action("GoogleResponse"), 
+                };
+
                 return Challenge(properties, GoogleDefaults.AuthenticationScheme);
             }catch(Exception ex)
             {
@@ -50,7 +52,7 @@ namespace ReceiptSharing.Api.Controllers
             {
                 var properties = new AuthenticationProperties
                 {
-                    RedirectUri = "https://localhost:7234/api/Auth/discord-response"
+                    RedirectUri = Url.Action("DiscordResponse")
                 };
 
                 return Challenge(properties, "Discord");

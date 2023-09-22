@@ -25,7 +25,7 @@ builder.Services.AddLogging(builder =>
 {
     builder.AddConsole(); // Use the Console logging provider
 });
-Console.WriteLine("Started");
+
 builder.Services.AddHealthChecks();
 builder.Services.AddAuthentication(options =>
     {
@@ -50,8 +50,8 @@ builder.Services.AddAuthentication(options =>
     })
     .AddDiscord(options =>
     {
-        options.ClientId = "1139169569206976634";
-        options.ClientSecret = "PMva8Q9krDw87KcsTKmOHKOT31YLwzTB";
+        options.ClientId = configuration["DiscordClientId"]!;
+        options.ClientSecret = configuration["DiscordClientSecret"]!;
         options.Scope.Add("identify"); // Request access to the user's identity
         options.Scope.Add("email");    
         options.ClaimActions.MapJsonKey("image", "picture");
@@ -91,7 +91,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {
     builder
-        .WithOrigins("http://localhost:5173") // Add other allowed origins if needed
+        .WithOrigins("https://receptao.netlify.app") // Add other allowed origins if needed
         .AllowCredentials()
         .AllowAnyMethod()
         .AllowAnyHeader();
