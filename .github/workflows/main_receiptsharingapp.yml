@@ -46,12 +46,10 @@ jobs:
           cd ReceiptSharing.Api  # Change to the correct directory
           dotnet ef migrations script --idempotent --project ReceiptSharing.Api.csproj --output artifacts/script.sql
 
-      - name: Update Database
-        uses: azure/sql-action@v1
-        with:
-          server-name: receiptsharingdb.postgres.database.azure.com
-          connection-string: '${{ secrets.DB_CONNECTION_STRING }}'
-          sql-file: './ReceiptSharing.Api/artifacts/script.sql'
+      - name: Execute SQL Script
+        run: |
+          psql "${{ secrets.DB_CONNECTION_STRING }}" -f ./ReceiptSharing.Api/artifacts/script.sql
+
 
       - name: Publish Artifacts
         uses: actions/upload-artifact@v2
