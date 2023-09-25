@@ -224,7 +224,7 @@ namespace ReceiptSharing.Api.Controllers
         }
 
         [HttpGet("")]
-        public async Task<ActionResult<ReceiptDtoListResponse>> GetSortedReceipts(string sortType = "newest", int limit = 10, int skip = 0)
+        public async Task<ActionResult<ReceiptDtoListResponse>> GetSortedReceipts(string sortType = "newest", int limit = 10, int skip = 0, string searchQuery = "")
         {
             try
             {
@@ -233,14 +233,14 @@ namespace ReceiptSharing.Api.Controllers
 
                 if (sortType == "bestRated")
                 {
-                    (sortedReceipts, isThereNextPage) = await _receiptRepository.GetReceiptsWithBayesianRatingAsync(limit, skip);
+                    (sortedReceipts, isThereNextPage) = await _receiptRepository.GetReceiptsWithBayesianRatingAsync(limit, skip, searchQuery);
                 }
                 else if(sortType == "hot")
                 {
-                    (sortedReceipts, isThereNextPage) = await _receiptRepository.GetReceiptsSortedByNewSubscriptionsAsync(limit, skip);
+                    (sortedReceipts, isThereNextPage) = await _receiptRepository.GetReceiptsSortedByNewSubscriptionsAsync(limit, skip, searchQuery);
                 }else
                 {
-                    (sortedReceipts, isThereNextPage) = await _receiptRepository.GetNewestReceiptsAsync(limit, skip);
+                    (sortedReceipts, isThereNextPage) = await _receiptRepository.GetNewestReceiptsAsync(limit, skip, searchQuery);
                 }
 
 

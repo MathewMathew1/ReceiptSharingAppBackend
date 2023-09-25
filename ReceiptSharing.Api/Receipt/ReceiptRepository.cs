@@ -56,9 +56,12 @@ namespace ReceiptSharing.Api.Repositories
 
         }
 
-        public async Task<(List<Receipt> receipts, bool isThereNextPage)> GetNewestReceiptsAsync(int limit, int skip)
+        public async Task<(List<Receipt> receipts, bool isThereNextPage)> GetNewestReceiptsAsync(int limit, int skip,string searchQuery = "")
         {
             var receipts = await Task.FromResult(_dbContext.Receipts.OrderByDescending(r => r.CreatedAt)
+                .Where(r => string.IsNullOrEmpty(searchQuery) ||
+                    r.Title.ToLower().Contains(searchQuery.ToLower()) ||
+                    r.Description.ToLower().Contains(searchQuery.ToLower()))
                 .Skip(skip)
                 .Take(limit + 1)
                 .Include(r => r.Ratings)
@@ -94,10 +97,13 @@ namespace ReceiptSharing.Api.Repositories
             return (subscribedReceiptsQuery, count);
         }
 
-        public async Task<(List<Receipt> receipts, bool isThereNextPage)> GetReceiptsWithBayesianRatingAsync(int limit, int skip)
+        public async Task<(List<Receipt> receipts, bool isThereNextPage)> GetReceiptsWithBayesianRatingAsync(int limit, int skip, string searchQuery = "")
         {
             var rankedReceipts = await _dbContext.Receipts
                 .Include(r => r.Ratings)
+                .Where(r => string.IsNullOrEmpty(searchQuery) ||
+                    r.Title.ToLower().Contains(searchQuery.ToLower()) ||
+                    r.Description.ToLower().Contains(searchQuery.ToLower()))
                 .Select(r => new
                 {
                     Receipt = r,
@@ -126,13 +132,16 @@ namespace ReceiptSharing.Api.Repositories
             return (rankedReceipts, isThereNextPage);
         }
 
-        public async Task<(List<Receipt> receipts, bool isThereNextPage)> GetReceiptsSortedByNewSubscriptionsAsync(int limit, int skip)
+        public async Task<(List<Receipt> receipts, bool isThereNextPage)> GetReceiptsSortedByNewSubscriptionsAsync(int limit, int skip, string searchQuery = "")
         {
             var lastWeekendStart = DateTimeOffset.UtcNow.AddDays(-6);
             var lastWeekendEnd = lastWeekendStart.AddDays(7);
 
             var rankedReceipts = await _dbContext.Receipts 
                 .Include(r => r.SubscriptionsReceipt)
+                .Where(r => string.IsNullOrEmpty(searchQuery) ||
+                    r.Title.ToLower().Contains(searchQuery.ToLower()) ||
+                    r.Description.ToLower().Contains(searchQuery.ToLower()))
                 .Select(r => new
                 {
                     Receipt = r,

@@ -88,14 +88,28 @@ builder.Services.AddScoped<IRatingRepository, RatingRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddSingleton<IImageStorage, IgmurImageStorage>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
-{
-    builder
-        .WithOrigins("https://receptao.netlify.app") // Add other allowed origins if needed
-        .AllowCredentials()
-        .AllowAnyMethod()
-        .AllowAnyHeader();
-}));
+if (builder.Environment.IsDevelopment())
+    {
+        builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
+        {
+            builder
+                .WithOrigins("http://localhost:5173") // Add other allowed origins for development
+                .AllowCredentials()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        }));
+    }
+    else // Production
+    {
+        builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
+        {
+            builder
+                .WithOrigins("https://receptao.netlify.app") // Add other allowed origins for production
+                .AllowCredentials()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        }));
+    }
 
 var app = builder.Build();
 
