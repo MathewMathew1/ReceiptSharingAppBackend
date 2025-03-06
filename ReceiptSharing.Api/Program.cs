@@ -36,7 +36,8 @@ builder.Services.AddAuthentication(options =>
 })
 .AddCookie(options =>
 {
-    
+    options.Cookie.SameSite = SameSiteMode.None; 
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 })
 .AddGoogle(googleOptions =>
 {

@@ -15,10 +15,8 @@ namespace ReceiptSharing.Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        // ...
-
         private readonly IUserRepository _userRepository;
-        private readonly ILogger<AuthController> _logger; // Add ILogger
+        private readonly ILogger<AuthController> _logger; 
         private readonly IMapper _mapper;
 
         public AuthController(IUserRepository userRepository, ILogger<AuthController> logger, IMapper mapper)
