@@ -27,6 +27,7 @@ namespace ReceiptSharing.Api.Models
             var connectionString = Environment.GetEnvironmentVariable("POSTGRESQLCONNSTR_DefaultConnection") is null?
                 _configuration.GetSection("POSTGRESQLCONNSTR_DefaultConnection").Value:
                 Environment.GetEnvironmentVariable("POSTGRESQLCONNSTR_DefaultConnection");
+                Console.WriteLine(connectionString);
             optionsBuilder.UseNpgsql(connectionString);
         }
 
