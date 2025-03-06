@@ -1,32 +1,17 @@
-# Use official .NET SDK image
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-
-# Set working directory
 WORKDIR /app
 
-# Copy project files
-COPY . . 
+COPY ReceiptSharing.Api/*.csproj ./ReceiptSharing.Api/
+RUN dotnet restore ReceiptSharing.Api/ReceiptSharing.Api.csproj
 
-# Install Entity Framework CLI
-RUN dotnet tool install --global dotnet-ef
+COPY . .
+WORKDIR /app/ReceiptSharing.Api
+RUN dotnet publish -c Release -o /app/out
 
-# Set PATH for EF tools to work
-ENV PATH="$PATH:/root/.dotnet/tools"
-
-# Restore dependencies
-RUN dotnet restore
-
-# Run migrations before starting the app
-RUN dotnet ef database update  # ✅ This ensures the database schema is up to date
-
-# Build and publish
-RUN dotnet publish -c Release -o out
-
-# Use runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
 WORKDIR /app
-COPY --from=build /app/out .
+COPY --from=build /app/out ./
 
-# Expose port and start app
+EXPOSE 5000
+
 CMD ["dotnet", "ReceiptSharing.Api.dll"]
-
