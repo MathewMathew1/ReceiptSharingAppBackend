@@ -14,4 +14,4 @@ COPY --from=build /app/out ./
 
 EXPOSE 5000
 
-CMD ["dotnet", "ReceiptSharing.Api.dll"]
+CMD ["sh", "-c", "dotnet ef database update && dotnet ReceiptSharing.Api.dll"]
