@@ -28,41 +28,38 @@ builder.Services.AddLogging(builder =>
 
 builder.Services.AddHealthChecks();
 builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme; // Set your desired default scheme
-        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme; // Set the desired challenge scheme
-    }).AddCookie(options =>
-        {
-      
-        })
-    .AddGoogle(GoogleDefaults.AuthenticationScheme,googleOptions =>
-    {
-        googleOptions.ClientId = configuration["GoogleClientId"]!;
-        googleOptions.ClientSecret = configuration["GoogleClientSecret"]!;
-        googleOptions.ClaimActions.MapJsonKey("image", "picture");
-    });
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme; // Set the default challenge to Google
 
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    })
-    .AddDiscord(options =>
-    {
-        options.ClientId = configuration["DiscordClientId"]!;
-        options.ClientSecret = configuration["DiscordClientSecret"]!;
-        options.Scope.Add("identify"); // Request access to the user's identity
-        options.Scope.Add("email");    
-        options.ClaimActions.MapJsonKey("image", "picture");
-        options.ClaimActions.MapCustomJson("urn:discord:avatar:url", user =>
-            string.Format(
-                CultureInfo.InvariantCulture,
-                "https://cdn.discordapp.com/avatars/{0}/{1}.{2}",
-                user.GetString("id"),
-                user.GetString("avatar"),
-                user.GetString("avatar")!.StartsWith("a_") ? "gif" : "png"));
-    });
+})
+.AddCookie(options =>
+{
+    
+})
+.AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = configuration["GoogleClientId"]!;
+    googleOptions.ClientSecret = configuration["GoogleClientSecret"]!;
+    googleOptions.ClaimActions.MapJsonKey("image", "picture");
+})
+.AddDiscord(options =>
+{
+    options.ClientId = configuration["DiscordClientId"]!;
+    options.ClientSecret = configuration["DiscordClientSecret"]!;
+    options.Scope.Add("identify"); // Request access to the user's identity
+    options.Scope.Add("email");
+    options.ClaimActions.MapJsonKey("image", "picture");
+    options.ClaimActions.MapCustomJson("urn:discord:avatar:url", user =>
+        string.Format(
+            CultureInfo.InvariantCulture,
+            "https://cdn.discordapp.com/avatars/{0}/{1}.{2}",
+            user.GetString("id"),
+            user.GetString("avatar"),
+            user.GetString("avatar")!.StartsWith("a_") ? "gif" : "png"));
+});
+
 
 builder.Services.AddControllers(options =>
 {
@@ -104,7 +101,7 @@ if (builder.Environment.IsDevelopment())
         builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
         {
             builder
-                .WithOrigins("https://receptao.netlify.app") // Add other allowed origins for production
+                .WithOrigins("https://receptao.netlify.app") 
                 .AllowCredentials()
                 .AllowAnyMethod()
                 .AllowAnyHeader();
