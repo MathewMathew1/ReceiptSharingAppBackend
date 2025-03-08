@@ -33,7 +33,7 @@ namespace ReceiptSharing.Api.Controllers
             {
                 var properties = new AuthenticationProperties
                 {
-                    RedirectUri = $"{Request.Scheme}://{Request.Host}/api/Auth/google-response"
+                    RedirectUri = $"https://{Request.Host}/api/Auth/google-response"
                 };
                 _logger.LogInformation("RedirectUri: " + properties.RedirectUri);
 
@@ -53,7 +53,7 @@ namespace ReceiptSharing.Api.Controllers
             {
                 var properties = new AuthenticationProperties
                 {
-                    RedirectUri = Url.Action("DiscordResponse")
+                    RedirectUri = $"https://{Request.Host}/api/Auth/discord-response"
                 };
 
                 return Challenge(properties, "Discord");
