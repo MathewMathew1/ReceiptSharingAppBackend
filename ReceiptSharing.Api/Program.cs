@@ -96,7 +96,8 @@ if (builder.Environment.IsDevelopment())
                 .WithOrigins("http://localhost:5173") // Add other allowed origins for development
                 .AllowCredentials()
                 .AllowAnyMethod()
-                .AllowAnyHeader();
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true);
         }));
     }
     else // Production
@@ -104,10 +105,11 @@ if (builder.Environment.IsDevelopment())
         builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
         {
             builder
-                .WithOrigins("https://receptao.netlify.app") 
+                .WithOrigins("https://receptao.netlify.app")              
                 .AllowCredentials()
                 .AllowAnyMethod()
-                .AllowAnyHeader();
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true);
         }));
     }
 

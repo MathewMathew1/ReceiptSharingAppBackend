@@ -16,13 +16,13 @@ namespace ReceiptSharing.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
-        private readonly ILogger<AuthController> _logger; 
+        private readonly ILogger<AuthController> _logger;
         private readonly IMapper _mapper;
 
         public AuthController(IUserRepository userRepository, ILogger<AuthController> logger, IMapper mapper)
         {
             _userRepository = userRepository;
-            _logger = logger; 
+            _logger = logger;
             _mapper = mapper;
         }
 
@@ -31,14 +31,23 @@ namespace ReceiptSharing.Api.Controllers
         {
             try
             {
-                var properties = new AuthenticationProperties { 
-                    RedirectUri = Url.Action("GoogleResponse"), 
+                var correlationCookies = Request.Cookies
+                    .Where(c => c.Key.StartsWith(".AspNetCore.Correlation"))
+                    .Select(c => $"{c.Key}: {c.Value}")
+                    .ToList();
+
+                _logger.LogInformation("Correlation cookies before auth: " + string.Join(", ", correlationCookies));
+
+                var properties = new AuthenticationProperties
+                {
+                    RedirectUri = Url.Action("GoogleResponse"),
                 };
 
                 return Challenge(properties, GoogleDefaults.AuthenticationScheme);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                 _logger.LogError(ex, "An error occurred while creating receipt");
+                _logger.LogError(ex, "An error occurred while creating receipt");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { error = $"An unexpected error occurred" });
             }
         }
@@ -54,9 +63,10 @@ namespace ReceiptSharing.Api.Controllers
                 };
 
                 return Challenge(properties, "Discord");
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                 _logger.LogError(ex, "An error occurred while creating discord link");
+                _logger.LogError(ex, "An error occurred while creating discord link");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { error = $"An unexpected error occurred" });
             }
         }
@@ -64,24 +74,25 @@ namespace ReceiptSharing.Api.Controllers
         [HttpGet("google-response")]
         public async Task<IActionResult> GoogleResponse()
         {
-             try
-             {       
+            try
+            {
                 var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 var claimsIdentity = result.Principal?.Identity as ClaimsIdentity;
 
-                if(claimsIdentity == null || result == null ) return BadRequest("Authentication failed or claims are missing.");
+                if (claimsIdentity == null || result == null) return BadRequest("Authentication failed or claims are missing.");
 
                 var email = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
                 var name = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
                 var profileImageUrl = claimsIdentity.FindFirst("image")?.Value;
 
 
-                if(email == null || name == null || profileImageUrl == null) return BadRequest("Authentication failed or claims are missing.");
+                if (email == null || name == null || profileImageUrl == null) return BadRequest("Authentication failed or claims are missing.");
 
                 return await HandleAuthentication(email, name, profileImageUrl);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                 _logger.LogError(ex, "An error occurred while creating receipt");
+                _logger.LogError(ex, "An error occurred while creating receipt");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { error = $"An unexpected error occurred" });
             }
         }
@@ -92,14 +103,16 @@ namespace ReceiptSharing.Api.Controllers
             try
             {
                 var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                
-                if(result.Principal == null ){
+
+                if (result.Principal == null)
+                {
                     return BadRequest("Authentication failed or claims are missing.");
                 }
 
                 var claimsIdentity = result.Principal.Identity as ClaimsIdentity;
 
-                if(claimsIdentity == null){
+                if (claimsIdentity == null)
+                {
                     return BadRequest("Authentication failed or claims are missing.");
                 }
 
@@ -110,13 +123,13 @@ namespace ReceiptSharing.Api.Controllers
                 var avatarHash = claimsIdentity.FindFirst("urn:discord:avatar:hash")?.Value; // Discord Avatar Hash
                 var profileImageUrl = $"https://cdn.discordapp.com/avatars/{nameIdentifier}/{avatarHash}.png";
 
-                if(email == null || name == null) return BadRequest("Authentication failed or claims are missing.");
+                if (email == null || name == null) return BadRequest("Authentication failed or claims are missing.");
 
-                return await HandleAuthentication(email, name, profileImageUrl);        
+                return await HandleAuthentication(email, name, profileImageUrl);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                 _logger.LogError(ex, "An error occurred while creating receipt");
+                _logger.LogError(ex, "An error occurred while creating receipt");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { error = $"An unexpected error occurred" });
             }
         }
@@ -148,24 +161,24 @@ namespace ReceiptSharing.Api.Controllers
                     var userCreated = await _userRepository.CreateUserAsync(newUser);
                 }
 
-                
+
                 token = _userRepository.GenerateJwtToken(user!);
 
                 Response.Cookies.Append("jwt", token, cookieOptions);
 
                 string redirectUrl;
 
-                #if DEBUG
+#if DEBUG
                 redirectUrl = "http://localhost:5173/";
-                #else
+#else
                 redirectUrl = "https://receptao.netlify.app/";
-                #endif
+#endif
 
                 return Redirect(redirectUrl);
             }
             catch (Exception ex)
             {
-                 _logger.LogError(ex, "An error occurred while creating receipt");
+                _logger.LogError(ex, "An error occurred while creating receipt");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { error = $"An unexpected error occurred" });
             }
         }
@@ -180,7 +193,7 @@ namespace ReceiptSharing.Api.Controllers
             }
             catch (Exception ex)
             {
-                 _logger.LogError(ex, "An error occurred while creating receipt");
+                _logger.LogError(ex, "An error occurred while creating receipt");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { error = $"An unexpected error occurred" });
             }
         }
@@ -192,15 +205,15 @@ namespace ReceiptSharing.Api.Controllers
             {
                 var user = await _userRepository.GetOtherUserById(id);
                 var userDto = _mapper.Map<UserProfileDto>(user);
-                return Ok(new{ user = userDto });
+                return Ok(new { user = userDto });
             }
             catch (Exception ex)
             {
-                 _logger.LogError(ex, "An error occurred while creating receipt");
+                _logger.LogError(ex, "An error occurred while creating receipt");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { error = $"An unexpected error occurred" });
             }
         }
-        
+
         [Authorize]
         [HttpGet("user")]
         public async Task<IActionResult> GetUserDataAsync()
@@ -209,11 +222,11 @@ namespace ReceiptSharing.Api.Controllers
             {
                 User user = (User)Request.HttpContext.Items["User"]!;
                 var userDto = _mapper.Map<UserDto>(user);
-                return Ok(new{ user= userDto});
+                return Ok(new { user = userDto });
             }
             catch (Exception ex)
             {
-                 _logger.LogError(ex, "An error occurred while getting user data");
+                _logger.LogError(ex, "An error occurred while getting user data");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { error = $"An unexpected error occurred" });
             }
         }
@@ -226,11 +239,11 @@ namespace ReceiptSharing.Api.Controllers
             {
                 User user = (User)Request.HttpContext.Items["User"]!;
                 await _userRepository.ChangeUsername(usernameCommand.Username, user.Id);
-                return Ok(new{ message="success"});
+                return Ok(new { message = "success" });
             }
             catch (Exception ex)
             {
-                 _logger.LogError(ex, "An error occurred while getting user data");
+                _logger.LogError(ex, "An error occurred while getting user data");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { error = $"An unexpected error occurred" });
             }
         }
@@ -240,19 +253,19 @@ namespace ReceiptSharing.Api.Controllers
         {
             try
             {
-               Response.Cookies.Append("jwt", "", new CookieOptions
+                Response.Cookies.Append("jwt", "", new CookieOptions
                 {
                     Expires = DateTime.UtcNow.AddYears(-1), // Expire it in the past
-                    HttpOnly = true, 
-                    SameSite = SameSiteMode.None, 
-                    Secure = true, 
-                    Path = "/", 
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.None,
+                    Secure = true,
+                    Path = "/",
                 });
-                return Ok(new{ message = "Logged out successfully"});
+                return Ok(new { message = "Logged out successfully" });
             }
             catch (Exception ex)
             {
-                 _logger.LogError(ex, "An error occurred while creating receipt");
+                _logger.LogError(ex, "An error occurred while creating receipt");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { error = $"An unexpected error occurred" });
             }
         }
