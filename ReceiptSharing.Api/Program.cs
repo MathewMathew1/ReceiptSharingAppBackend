@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Globalization;
 using ReceiptSharing.Api.MiddleWare;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +35,12 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme; // Set the default challenge to Google
 
 })
-.AddCookie()
+.AddCookie(options =>
+{
+    options.Cookie.SameSite = SameSiteMode.None;  
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; 
+    options.Cookie.HttpOnly = true; 
+})
 .AddGoogle(googleOptions =>
 {
     googleOptions.ClientId = configuration["GoogleClientId"]!;
@@ -115,6 +121,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedProto
+});
 app.UseAuthentication();
 
 app.UseCors("corsapp");
