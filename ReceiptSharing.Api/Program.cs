@@ -34,11 +34,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme; // Set the default challenge to Google
 
 })
-.AddCookie(options =>
-{
-    options.Cookie.SameSite = SameSiteMode.None; 
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-})
+.AddCookie()
 .AddGoogle(googleOptions =>
 {
     googleOptions.ClientId = configuration["GoogleClientId"]!;
