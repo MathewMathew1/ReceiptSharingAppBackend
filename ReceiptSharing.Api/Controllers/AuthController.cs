@@ -31,26 +31,21 @@ namespace ReceiptSharing.Api.Controllers
         {
             try
             {
-                var correlationCookies = Request.Cookies
-                    .Where(c => c.Key.StartsWith(".AspNetCore.Correlation"))
-                    .Select(c => $"{c.Key}: {c.Value}")
-                    .ToList();
-
-                _logger.LogInformation("Correlation cookies before auth: " + string.Join(", ", correlationCookies));
-
                 var properties = new AuthenticationProperties
                 {
-                    RedirectUri = Url.Action("GoogleResponse"),
+                    RedirectUri = $"{Request.Scheme}://{Request.Host}/api/Auth/GoogleResponse"
                 };
+                _logger.LogInformation("RedirectUri: " + properties.RedirectUri);
 
                 return Challenge(properties, GoogleDefaults.AuthenticationScheme);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while creating receipt");
-                return StatusCode(StatusCodes.Status500InternalServerError, new { error = $"An unexpected error occurred" });
+                _logger.LogError(ex, "An error occurred while authenticating with Google");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { error = "An unexpected error occurred" });
             }
         }
+
 
         [HttpGet("discord")]
         public IActionResult DiscordLogin()
