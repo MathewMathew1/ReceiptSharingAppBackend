@@ -33,7 +33,7 @@ namespace ReceiptSharing.Api.Controllers
             {
                 var properties = new AuthenticationProperties
                 {
-                    RedirectUri = $"{Request.Scheme}://{Request.Host}/api/Auth/GoogleResponse"
+                    RedirectUri = Url.Action("GoogleResponse"),
                 };
                 _logger.LogInformation("RedirectUri: " + properties.RedirectUri);
 
@@ -41,11 +41,10 @@ namespace ReceiptSharing.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while authenticating with Google");
-                return StatusCode(StatusCodes.Status500InternalServerError, new { error = "An unexpected error occurred" });
+                _logger.LogError(ex, "An error occurred while creating receipt");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { error = $"An unexpected error occurred" });
             }
         }
-
 
         [HttpGet("discord")]
         public IActionResult DiscordLogin()
@@ -66,6 +65,7 @@ namespace ReceiptSharing.Api.Controllers
             }
         }
 
+        [RequireHttps]
         [HttpGet("google-response")]
         public async Task<IActionResult> GoogleResponse()
         {
@@ -92,6 +92,7 @@ namespace ReceiptSharing.Api.Controllers
             }
         }
 
+        [RequireHttps]
         [HttpGet("discord-response")]
         public async Task<IActionResult> DiscordResponse()
         {
